@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from googletrans import Translator
 import requests
+import json
 
 
 # Obtenção dos dados meteorológicos:
@@ -31,7 +32,7 @@ def display_weather_in_gui(data):
 
         # Atualize o rótulo de saída com os dados traduzidos
         output_label.config(
-            text=f"Clima em {city}, {country}:\n"
+            text=f"Clima agora em {city}, {country}:\n"
             f"Temperatura: {temperature}°C\n"
             f"Sensação térmica: {termic_sense}°C\n"
             f"Temperatura mínima: {t_min}°C\n"
@@ -66,13 +67,17 @@ def get_and_display_weather():
         )
 
 
+# Lendo o arquivo de configuração para proteger a Api_key:
+with open("config/config.json", "r") as config_file:
+    config = json.load(config_file)
+
 # Configuração inicial
-api_key = "9e40882d49c9fbd3c949c345aa42701f"
+api_key = config["api_key"]
 translator = Translator()
 
 # Configuração da janela
 window = tk.Tk()
-window.title("Previsão do Tempo")
+window.title("Clima agora")
 window.geometry("400x300")
 window.iconbitmap(
     "D:\Pablinho & Nanda\Documents\Programação\Previsão do tempo\icon_previsao.ico"
@@ -85,7 +90,7 @@ city_entry.pack()
 
 # Botão para obter os dados meteorológicos
 get_weather_button = tk.Button(
-    window, text="Obter Previsão", command=get_and_display_weather
+    window, text="Obter clima agora", command=get_and_display_weather
 )
 get_weather_button.pack()
 
